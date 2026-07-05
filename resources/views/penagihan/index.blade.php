@@ -4,7 +4,13 @@
 <div class="card shadow-sm border-0">
     <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Data Penagihan (Pembayaran Piutang)</h5>
-        <a href="{{ route('penagihan.create') }}" class="btn btn-dark btn-sm">Terima Pembayaran Baru</a>
+
+        <div class="d-flex gap-2">
+            <a href="{{ asset('dokumen/BUKU PANDUAN PENGGUNA.pdf') }}" target="_blank" class="btn btn-dark btn-sm me-2">
+            <i class="fas fa-book"></i> Buku Panduan
+            </a>
+            <a href="{{ route('penagihan.create') }}" class="btn btn-dark btn-sm">Terima Pembayaran Baru</a>
+        </div>
     </div>
     <div class="card-body">
         @if(session('success')) <div class="alert alert-success">{{ session('success') }}</div> @endif
