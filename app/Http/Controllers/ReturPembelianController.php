@@ -43,7 +43,7 @@ class ReturPembelianController extends Controller
                 'tgl_retur' => $request->tgl_retur,
                 'pembelian_id' => $request->pembelian_id,
                 'supplier_id' => $request->supplier_id,
-                'keterangan' => $request->keterangan,
+                'alasan' => $request->keterangan,
             ]);
 
             // 2. Simpan Detail dan Kurangi Stok Barang

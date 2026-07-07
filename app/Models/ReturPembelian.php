@@ -14,7 +14,7 @@ class ReturPembelian extends Model
         'tgl_retur', 
         'pembelian_id', 
         'supplier_id', 
-        'keterangan'
+        'alasan'
     ];
 
     public function pembelian()

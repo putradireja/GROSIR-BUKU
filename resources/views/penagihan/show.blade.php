@@ -1,6 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+@media print {
+    body * { visibility: hidden; }
+    #printArea, #printArea * { visibility: visible; }
+    #printArea { position: absolute; left: 0; top: 0; width: 100%; }
+    .no-print { display: none !important; }
+    table, thead, tbody, tr, td { page-break-inside: avoid; break-inside: avoid; }
+}
+</style>
+
+<div id="printArea">
 <div class="card shadow-sm border-0" style="max-width: 650px; margin: auto;">
     <div class="card-header bg-dark text-white text-center">
         <h5 class="mb-0">BUKTI TANDA TERIMA PEMBAYARAN</h5>
@@ -53,7 +64,7 @@
             </tr>
         </table>
         
-        <div class="text-center mt-4 border-top pt-3">
+        <div class="text-center mt-4 border-top pt-3 no-print">
             <button onclick="window.print()" class="btn btn-success me-2">
                 Cetak Bukti
             </button>
@@ -62,5 +73,6 @@
             </a>
         </div>
     </div>
+</div>
 </div>
 @endsection
