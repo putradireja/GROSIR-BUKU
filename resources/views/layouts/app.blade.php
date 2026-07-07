@@ -30,12 +30,12 @@
                     <a href="{{ route('master.supplier.index') }}" class="list-group-item list-group-item-action">Master Supplier</a>
                     <a href="{{ route('master.konsumen.index') }}" class="list-group-item list-group-item-action">Master Konsumen</a>
                     <a href="{{ route('master.barang.index') }}" class="list-group-item list-group-item-action">Master Barang</a>
-                    <!-- <a href="{{ route('pemesanan.index') }}" class="list-group-item list-group-item-action">Pemesanan</a>
-                    <a href="{{ route('pembelian.index') }}" class="list-group-item list-group-item-action">Pembelian</a> -->
+                    <a href="{{ route('pemesanan.index') }}" class="list-group-item list-group-item-action">Pemesanan</a>
+                    <a href="{{ route('pembelian.index') }}" class="list-group-item list-group-item-action">Pembelian</a>
                     <a href="{{ route('penjualan.index') }}" class="list-group-item list-group-item-action">Penjualan</a>
                     <a href="{{ route('penagihan.index') }}" class="list-group-item list-group-item-action">Penagihan</a>
-                    <!-- <a href="{{ route('pembayaran-hutang.index') }}" class="list-group-item list-group-item-action">Pembayaran Hutang</a>
-                    <a href="{{ route('retur-pembelian.index') }}" class="list-group-item list-group-item-action">Retur Pembelian</a> -->
+                    <a href="{{ route('pembayaran-hutang.index') }}" class="list-group-item list-group-item-action">Pembayaran Hutang</a>
+                    <a href="{{ route('retur-pembelian.index') }}" class="list-group-item list-group-item-action">Retur Pembelian</a>
                 </div>
             </div>
             <div class="col-md-10">
