@@ -17,6 +17,7 @@ class PenjualanRequest extends FormRequest
             'no_jual' => 'required|string|unique:penjualans,no_jual',
             'tgl_jual' => 'required|date',
             'konsumen_id' => 'required|exists:konsumens,id',
+            'supplier_id' => 'required|exists:suppliers,id',
             'tipe' => 'required|in:cash,credit',
             'jatuh_tempo' => 'nullable|required_if:tipe,credit|date',
             'barang_id' => 'required|array|min:1',

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ReturPembelian;
 use App\Models\ReturPembelianDetail;
 use App\Models\Pembelian;
+use App\Models\PembelianDetail; // ✅ DITAMBAHKAN: Untuk mengambil harga beli asli
 use App\Models\Barang;
 use App\Http\Requests\ReturPembelianRequest;
 use Illuminate\Support\Facades\DB;
@@ -37,6 +38,8 @@ class ReturPembelianController extends Controller
     {
         DB::beginTransaction();
         try {
+            $total_retur = 0; 
+
             // 1. Buat Header Retur
             $retur = ReturPembelian::create([
                 'no_retur' => $request->no_retur,
@@ -44,6 +47,7 @@ class ReturPembelianController extends Controller
                 'pembelian_id' => $request->pembelian_id,
                 'supplier_id' => $request->supplier_id,
                 'alasan' => $request->keterangan,
+                'total_retur' => 0, 
             ]);
 
             // 2. Simpan Detail dan Kurangi Stok Barang
@@ -56,16 +60,34 @@ class ReturPembelianController extends Controller
                     throw new \Exception("Stok {$barang->judul} di gudang tidak mencukupi untuk diretur! Sisa: {$barang->stok}");
                 }
 
+                // ✅ PERBAIKAN: Ambil harga beli asal dari transaksi pembelian awal
+                $pembelianDetail = PembelianDetail::where('pembelian_id', $request->pembelian_id)
+                                    ->where('barang_id', $barang_id)
+                                    ->first();
+
+                $harga_satuan = $pembelianDetail ? $pembelianDetail->harga_satuan : ($barang->harga_beli ?? 0);
+                
+                // ✅ ANTISIPASI: Hitung subtotal sekalian biar tidak error lagi setelah ini
+                $subtotal = $qty_retur * $harga_satuan;
+
                 ReturPembelianDetail::create([
                     'retur_pembelian_id' => $retur->id,
                     'barang_id' => $barang_id,
                     'qty' => $qty_retur,
+                    'harga_satuan' => $harga_satuan, // ✅ Mengisi harga_satuan agar tidak error 1364
+                    'subtotal' => $subtotal,         // ✅ Mengisi subtotal (antisipasi error berikutnya)
                 ]);
 
                 // KURANGI STOK KARENA BARANG DIKEMBALIKAN KE SUPPLIER
                 $barang->stok -= $qty_retur;
                 $barang->save();
+
+                // ✅ Mengakumulasikan total uang retur pembelian
+                $total_retur += $subtotal; 
             }
+
+            // 4. Update total retur ke database
+            $retur->update(['total_retur' => $total_retur]);
 
             DB::commit();
             return redirect()->route('retur-pembelian.index')->with('success', 'Retur Pembelian berhasil dicatat. Stok barang telah dikurangi.');

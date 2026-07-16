@@ -28,6 +28,15 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="col-md-6 mb-3">
+                    <label>Supplier</label>
+                    <select name="supplier_id" class="form-control" required>
+                        <option value="">-- Pilih Supplier --</option>
+                        @foreach($suppliers as $supplier)
+                            <option value="{{ $supplier->id }}">{{ $supplier->nama }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 
                 <div class="col-md-3 mb-3">
                     <label>Tipe Pembayaran</label>

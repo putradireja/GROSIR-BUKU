@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('konsumen_id')->constrained('konsumens');
             $table->enum('tipe', ['cash', 'credit']);
             $table->date('jatuh_tempo')->nullable();
+            $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('cascade');
             $table->enum('status_bayar', ['lunas', 'belum'])->default('belum');
             $table->integer('total');
             $table->timestamps();

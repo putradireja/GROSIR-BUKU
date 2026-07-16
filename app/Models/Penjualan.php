@@ -10,7 +10,7 @@ class Penjualan extends Model
     use HasFactory;
 
     protected $fillable = [
-        'no_jual', 'tgl_jual', 'konsumen_id', 'tipe', 
+        'no_jual', 'tgl_jual', 'konsumen_id', 'supplier_id', 'tipe',
         'jatuh_tempo', 'status_bayar', 'total'
     ];
 
@@ -22,5 +22,9 @@ class Penjualan extends Model
     public function details()
     {
         return $this->hasMany(PenjualanDetail::class);
+    }
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
     }
 }

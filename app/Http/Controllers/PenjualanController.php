@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Penjualan;
 use App\Models\PenjualanDetail;
 use App\Models\Konsumen;
+use App\Models\Supplier;
 use App\Models\Barang;
 use App\Http\Requests\PenjualanRequest;
 use Illuminate\Support\Facades\DB;
@@ -13,13 +14,14 @@ class PenjualanController extends Controller
 {
     public function index()
     {
-        $penjualans = Penjualan::with('konsumen')->latest()->paginate(10);
+        $penjualans = Penjualan::with('supplier')->latest()->paginate(10);
         return view('penjualan.index', compact('penjualans'));
     }
 
     public function create()
     {
         $konsumens = Konsumen::orderBy('nama')->get();
+        $suppliers = Supplier::orderBy('nama')->get();
         // Hanya tampilkan barang yang stoknya lebih dari 0
         $barangs = Barang::where('stok', '>', 0)->orderBy('judul')->get();
         
@@ -28,7 +30,7 @@ class PenjualanController extends Controller
         $last = Penjualan::whereDate('created_at', date('Y-m-d'))->count() + 1;
         $no_jual = 'PJ-' . $date . '-' . str_pad($last, 3, '0', STR_PAD_LEFT);
 
-        return view('penjualan.create', compact('konsumens', 'barangs', 'no_jual'));
+        return view('penjualan.create', compact('konsumens', 'suppliers', 'barangs', 'no_jual'));
     }
 
     public function store(PenjualanRequest $request)
@@ -42,6 +44,7 @@ class PenjualanController extends Controller
                 'no_jual' => $request->no_jual,
                 'tgl_jual' => $request->tgl_jual,
                 'konsumen_id' => $request->konsumen_id,
+                'supplier_id' => $request->supplier_id,
                 'tipe' => $request->tipe,
                 'jatuh_tempo' => $request->tipe == 'credit' ? $request->jatuh_tempo : null,
                 'status_bayar' => $status_bayar,

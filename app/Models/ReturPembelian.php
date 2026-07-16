@@ -14,8 +14,10 @@ class ReturPembelian extends Model
         'tgl_retur', 
         'pembelian_id', 
         'supplier_id', 
-        'alasan'
+        'alasan',
+        'total_retur'  // <-- 2. Tambahkan field total_retur ke fillable
     ];
+
 
     public function pembelian()
     {

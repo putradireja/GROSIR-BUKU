@@ -36,6 +36,7 @@
                     <a href="{{ route('penagihan.index') }}" class="list-group-item list-group-item-action">Penagihan</a>
                     <a href="{{ route('pembayaran-hutang.index') }}" class="list-group-item list-group-item-action">Pembayaran Hutang</a>
                     <a href="{{ route('retur-pembelian.index') }}" class="list-group-item list-group-item-action">Retur Pembelian</a>
+                    <a href="{{ route('retur-penjualan.index') }}" class="list-group-item list-group-item-action">Retur Penjualan</a>
                 </div>
             </div>
             <div class="col-md-10">

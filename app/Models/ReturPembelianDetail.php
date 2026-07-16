@@ -12,7 +12,9 @@ class ReturPembelianDetail extends Model
     protected $fillable = [
         'retur_pembelian_id', 
         'barang_id', 
-        'qty'
+        'qty',
+        'harga_satuan', // <--- TAMBAHKAN DI SINI
+        'subtotal'      // <--- TAMBAHKAN DI SINI
     ];
 
     public function barang()
