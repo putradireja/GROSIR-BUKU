@@ -1,6 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+@media print {
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+    }
+    body * { visibility: hidden; }
+    #printArea, #printArea * { visibility: visible; }
+    #printArea { position: absolute; left: 0; top: 0; width: 100%; }
+    .no-print { display: none !important; }
+    table, thead, tbody, tr, td { page-break-inside: avoid; break-inside: avoid; }
+}
+</style>
+
+<div id="printArea">
 <div class="card shadow-sm border-0">
     <div class="card-header bg-secondary text-white">
         <h5 class="mb-0">Detail Retur Pembelian</h5>
@@ -11,7 +27,7 @@
                 <table class="table table-borderless table-sm">
                     <tr><td width="150px">No. Retur</td><td>: <b>{{ $retur->no_retur }}</b></td></tr>
                     <tr><td>Tanggal</td><td>: {{ \Carbon\Carbon::parse($retur->tgl_retur)->format('d F Y') }}</td></tr>
-                    <tr><td>Ref Pembelian</td><td>: <a href="{{ route('pembelian.show', $retur->pembelian_id) }}">{{ $retur->pembelian->no_beli }}</a></td></tr>
+                    <tr><td>Ref Pembelian</td><td>: <a href="{{ route('pembelian.show', $retur->pembelian_id) }}" class="no-print">{{ $retur->pembelian->no_beli }}</a><span class="d-none d-print-inline">{{ $retur->pembelian->no_beli }}</span></td></tr>
                     <tr><td>Keterangan</td><td>: <span class="text-danger">{{ $retur->keterangan ?? '-' }}</span></td></tr>
                 </table>
             </div>
@@ -47,8 +63,11 @@
             </tbody>
         </table>
 
-        <button onclick="window.print()" class="btn btn-secondary mt-3">Cetak Surat Jalan Retur</button>
-        <a href="{{ route('retur-pembelian.index') }}" class="btn btn-outline-secondary mt-3">Kembali</a>
+        <div class="mt-3 no-print">
+            <button onclick="window.print()" class="btn btn-secondary me-2">Cetak Surat Jalan Retur</button>
+            <a href="{{ route('retur-pembelian.index') }}" class="btn btn-outline-secondary">Kembali</a>
+        </div>
     </div>
+</div>
 </div>
 @endsection

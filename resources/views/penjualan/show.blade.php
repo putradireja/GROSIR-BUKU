@@ -1,6 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+@media print {
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+    }
+    body * { visibility: hidden; }
+    #printArea, #printArea * { visibility: visible; }
+    #printArea { position: absolute; left: 0; top: 0; width: 100%; }
+    .no-print { display: none !important; }
+    table, thead, tbody, tr, td { page-break-inside: avoid; break-inside: avoid; }
+}
+</style>
+
+<div id="printArea">
 <div class="card shadow-sm border-0">
     <div class="card-header bg-info text-white">
         <h5 class="mb-0">Detail Transaksi Penjualan</h5>
@@ -62,8 +78,11 @@
             </tfoot>
         </table>
 
-        <button onclick="window.print()" class="btn btn-success mt-3">Cetak Struk Sederhana</button>
-        <a href="{{ route('penjualan.index') }}" class="btn btn-secondary mt-3">Kembali</a>
+        <div class="mt-3 no-print">
+            <button onclick="window.print()" class="btn btn-success me-2">Cetak Struk Penjualan</button>
+            <a href="{{ route('penjualan.index') }}" class="btn btn-secondary">Kembali</a>
+        </div>
     </div>
+</div>
 </div>
 @endsection
