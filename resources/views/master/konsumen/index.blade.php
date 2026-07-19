@@ -1,55 +1,59 @@
 @extends('layouts.app')
 
-@section('content')
-<div class="card shadow-sm border-0">
-    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Data Konsumen</h5>
-        <a href="{{ route('master.konsumen.create') }}" class="btn btn-light btn-sm">Tambah Konsumen</a>
-    </div>
-    <div class="card-body">
-        @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
+@section('title', 'Master Konsumen')
 
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped">
-                <thead class="table-dark">
-                    <tr>
-                        <th>No</th>
-                        <th>Kode</th>
-                        <th>Nama</th>
-                        <th>Telepon</th>
-                        <th>Email</th>
-                        <th width="200px">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($konsumens as $konsumen)
-                    <tr>
-                        <td>{{ $loop->iteration + $konsumens->firstItem() - 1 }}</td>
-                        <td>{{ $konsumen->kode }}</td>
-                        <td>{{ $konsumen->nama }}</td>
-                        <td>{{ $konsumen->telepon }}</td>
-                        <td>{{ $konsumen->email }}</td>
-                        <td>
-                            <form action="{{ route('master.konsumen.destroy', $konsumen->id) }}" method="POST">
-                                <a href="{{ route('master.konsumen.show', $konsumen->id) }}" class="btn btn-info btn-sm text-white">Detail</a>
-                                <a href="{{ route('master.konsumen.edit', $konsumen->id) }}" class="btn btn-warning btn-sm">Edit</a>
+@section('content')
+<x-card title="Data Konsumen" subtitle="Kelola seluruh data pelanggan toko">
+    <x-slot name="actions">
+        <x-button as="a" href="{{ route('master.konsumen.create') }}" variant="primary">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            Tambah Konsumen
+        </x-button>
+    </x-slot>
+
+    <div class="overflow-x-auto rounded-2xl border border-purple-50">
+        <table class="table-premium w-full text-left">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Kode</th>
+                    <th>Nama</th>
+                    <th>Telepon</th>
+                    <th>Email</th>
+                    <th class="text-right">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($konsumens as $konsumen)
+                <tr>
+                    <td>{{ $loop->iteration + $konsumens->firstItem() - 1 }}</td>
+                    <td class="font-semibold text-purple-600">{{ $konsumen->kode }}</td>
+                    <td class="font-medium text-slate-700">{{ $konsumen->nama }}</td>
+                    <td>{{ $konsumen->telepon }}</td>
+                    <td>{{ $konsumen->email }}</td>
+                    <td>
+                        <div class="flex items-center justify-end gap-2">
+                            <x-button as="a" href="{{ route('master.konsumen.show', $konsumen->id) }}" variant="ghost">Detail</x-button>
+                            <x-button as="a" href="{{ route('master.konsumen.edit', $konsumen->id) }}" variant="secondary">Edit</x-button>
+                            <form action="{{ route('master.konsumen.destroy', $konsumen->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
+                                <x-button type="submit" variant="danger">Hapus</x-button>
                             </form>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="6" class="text-center">Data Konsumen belum tersedia.</td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-            {{ $konsumens->links('pagination::bootstrap-5') }}
-        </div>
+                        </div>
+                    </td>
+                </tr>
+                @empty
+                    <x-empty-state label="Data Konsumen belum tersedia." :colspan="6" />
+                @endforelse
+            </tbody>
+        </table>
     </div>
-</div>
+
+    <div class="mt-5">
+        {{ $konsumens->links() }}
+    </div>
+</x-card>
 @endsection

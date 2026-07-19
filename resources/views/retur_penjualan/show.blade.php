@@ -1,12 +1,14 @@
 @extends('layouts.app')
 
+@section('title', 'Detail Retur Penjualan')
+
 @section('content')
 <style>
 @media print {
     * {
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
-        color-adjust: exact !important;
+        color: exact !important;
     }
     body * { visibility: hidden; }
     #printArea, #printArea * { visibility: visible; }
@@ -17,57 +19,83 @@
 </style>
 
 <div id="printArea">
-<div class="card shadow-sm border-0">
-    <div class="card-header bg-secondary text-white">
-        <h5 class="mb-0">Detail Retur Penjualan</h5>
-    </div>
-    <div class="card-body">
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <table class="table table-borderless table-sm">
-                    <tr><td width="150px">No. Retur</td><td>: <b>{{ $retur->no_retur }}</b></td></tr>
-                    <tr><td>Tanggal</td><td>: {{ \Carbon\Carbon::parse($retur->tgl_retur)->format('d F Y') }}</td></tr>
-                    <tr><td>Ref Penjualan</td><td>: <a href="{{ route('penjualan.show', $retur->penjualan_id) }}" class="no-print">{{ $retur->penjualan->no_jual }}</a><span class="d-none d-print-inline">{{ $retur->penjualan->no_jual }}</span></td></tr>
-                    <tr><td>Alasan Retur</td><td>: <span class="text-danger">{{ $retur->alasan ?? '-' }}</span></td></tr>
-                </table>
-            </div>
-            <div class="col-md-6">
-                <div class="border p-3 rounded bg-light">
-                    <h6>Konsumen Pelanggan:</h6>
-                    <strong>{{ $retur->konsumen->nama ?? 'Tanpa Konsumen' }}</strong><br>
-                    {{ $retur->konsumen->alamat ?? '-' }}<br>
-                    Telp: {{ $retur->konsumen->telepon ?? '-' }}
+<x-card title="Detail Retur Penjualan" subtitle="Informasi lengkap pengembalian barang">
+    {{-- Info Utama & Konsumen --}}
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 mb-6">
+        <div class="rounded-2xl bg-purple-50/50 p-4">
+            <dl class="space-y-2">
+                <div class="flex items-center gap-3">
+                    <dt class="w-32 text-xs font-bold uppercase tracking-wide text-purple-400">No. Retur</dt>
+                    <dd class="text-sm font-semibold text-slate-700">{{ $retur->no_retur }}</dd>
                 </div>
-            </div>
+                <div class="flex items-center gap-3">
+                    <dt class="w-32 text-xs font-bold uppercase tracking-wide text-purple-400">Tanggal</dt>
+                    <dd class="text-sm text-slate-700">{{ \Carbon\Carbon::parse($retur->tgl_retur)->format('d F Y') }}</dd>
+                </div>
+                <div class="flex items-center gap-3">
+                    <dt class="w-32 text-xs font-bold uppercase tracking-wide text-purple-400">Ref Penjualan</dt>
+                    <dd class="text-sm text-slate-700">
+                        <a href="{{ route('penjualan.show', $retur->penjualan_id) }}" class="no-print text-purple-600 hover:text-purple-800">
+                            {{ $retur->penjualan->no_jual }}
+                        </a>
+                        <span class="d-none d-print-inline">{{ $retur->penjualan->no_jual }}</span>
+                    </dd>
+                </div>
+                <div class="flex items-center gap-3">
+                    <dt class="w-32 text-xs font-bold uppercase tracking-wide text-purple-400">Alasan Retur</dt>
+                    <dd class="text-sm font-medium text-red-600">{{ $retur->alasan ?? '-' }}</dd>
+                </div>
+            </dl>
         </div>
 
-        <h6 class="border-bottom pb-2">Daftar Barang Dikembalikan</h6>
-        <table class="table table-bordered table-striped">
-            <thead class="table-dark">
+        <div class="rounded-2xl bg-purple-50/50 p-4">
+            <h6 class="text-xs font-bold uppercase tracking-wide text-purple-400 mb-2">Konsumen Pelanggan</h6>
+            <div class="text-sm text-slate-700">
+                <strong>{{ $retur->konsumen->nama ?? 'Tanpa Konsumen' }}</strong><br>
+                {{ $retur->konsumen->alamat ?? '-' }}<br>
+                Telp: {{ $retur->konsumen->telepon ?? '-' }}
+            </div>
+        </div>
+    </div>
+
+    {{-- Tabel Barang --}}
+    <h6 class="text-sm font-semibold text-slate-700 mb-3">Daftar Barang Dikembalikan</h6>
+    <div class="overflow-x-auto rounded-xl border border-purple-100">
+        <table class="table-premium w-full text-left">
+            <thead class="bg-purple-100">
                 <tr>
-                    <th width="50px">No</th>
-                    <th>Kode Barang</th>
-                    <th>Judul Buku</th>
-                    <th width="150px">Qty Diretur</th>
+                    <th class="w-[10%] text-center">No</th>
+                    <th class="w-[25%]">Kode Barang</th>
+                    <th class="w-[45%]">Judul Buku</th>
+                    <th class="w-[20%] text-center">Qty Diretur</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($retur->details as $detail)
-                <tr>
-                    <td class="text-center">{{ $loop->iteration }}</td>
-                    <td>{{ $detail->barang->kode }}</td>
-                    <td>{{ $detail->barang->judul }}</td>
-                    <td><span class="badge bg-danger fs-6">{{ $detail->qty }} Item</span></td>
+                <tr class="border-t border-purple-50">
+                    <td class="text-center text-slate-700">{{ $loop->iteration }}</td>
+                    <td class="font-mono text-purple-600">{{ $detail->barang->kode }}</td>
+                    <td class="text-slate-700">{{ $detail->barang->judul }}</td>
+                    <td class="text-center">
+                        <x-badge color="red">{{ $detail->qty }} Item</x-badge>
+                    </td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
-
-        <div class="mt-3 no-print">
-            <button onclick="window.print()" class="btn btn-secondary me-2">Cetak Surat Jalan Retur</button>
-            <a href="{{ route('retur-penjualan.index') }}" class="btn btn-outline-secondary">Kembali</a>
-        </div>
     </div>
-</div>
+
+    {{-- Tombol Aksi --}}
+    <div class="mt-6 flex items-center gap-3 border-t border-purple-50 pt-5 no-print">
+        <button onclick="window.print()" class="inline-flex items-center gap-2 rounded-lg bg-gray-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-gray-700 transition">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6.72 19.25h10.56M6.72 4.75h10.56a2.25 2.25 0 0 1 2.25 2.25v9.75a2.25 2.25 0 0 1-2.25 2.25H6.72a2.25 2.25 0 0 1-2.25-2.25V7a2.25 2.25 0 0 1 2.25-2.25Z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 10.75h4.5M9.75 14.75h4.5" />
+            </svg>
+            Cetak Surat Jalan Retur
+        </button>
+        <x-button as="a" href="{{ route('retur-penjualan.index') }}" variant="ghost">Kembali</x-button>
+    </div>
+</x-card>
 </div>
 @endsection

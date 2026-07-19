@@ -3,47 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplikasi Grosir Buku</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@yield('title', 'Dashboard') &mdash; Grosir Buku</title>
+
+    {{-- Font --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    {{-- Aset --}}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" defer></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{{ route('dashboard') }}">Grosir Buku</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <form action="{{ route('logout') }}" method="POST">
-                            @csrf
-                            <button class="btn btn-danger btn-sm" type="submit">Logout</button>
-                        </form>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <div class="container-fluid mt-3">
-        <div class="row">
-            <div class="col-md-2">
-                <div class="list-group">
-                    <a href="{{ route('dashboard') }}" class="list-group-item list-group-item-action">Dashboard</a>
-                    <a href="{{ route('master.supplier.index') }}" class="list-group-item list-group-item-action">Master Supplier</a>
-                    <a href="{{ route('master.konsumen.index') }}" class="list-group-item list-group-item-action">Master Konsumen</a>
-                    <a href="{{ route('master.barang.index') }}" class="list-group-item list-group-item-action">Master Barang</a>
-                    <a href="{{ route('pemesanan.index') }}" class="list-group-item list-group-item-action">Pemesanan</a>
-                    <a href="{{ route('pembelian.index') }}" class="list-group-item list-group-item-action">Pembelian</a>
-                    <a href="{{ route('penjualan.index') }}" class="list-group-item list-group-item-action">Penjualan</a>
-                    <a href="{{ route('penagihan.index') }}" class="list-group-item list-group-item-action">Penagihan</a>
-                    <a href="{{ route('pembayaran-hutang.index') }}" class="list-group-item list-group-item-action">Pembayaran Hutang</a>
-                    <a href="{{ route('retur-pembelian.index') }}" class="list-group-item list-group-item-action">Retur Pembelian</a>
-                    <a href="{{ route('retur-penjualan.index') }}" class="list-group-item list-group-item-action">Retur Penjualan</a>
-                </div>
-            </div>
-            <div class="col-md-10">
+<body class="font-sans text-slate-700 antialiased latar-gerak">
+    <div class="flex min-h-screen">
+        {{-- Sidebar --}}
+        <x-sidebar />
+
+        {{-- Wadah Kanan (Navbar + Konten) --}}
+        <div class="flex min-h-screen w-full flex-1 flex-col lg:ml-0">
+            {{-- Navbar Atas --}}
+            <x-navbar :title="trim($__env->yieldContent('title')) ?: 'Dashboard'" />
+
+            {{-- Konten Utama --}}
+            <main class="flex-1 px-4 py-6 lg:px-8">
+                {{-- Pesan Sukses --}}
+                @if(session('success'))
+                    <div class="mb-5 flex items-center gap-3 rounded-2xl border border-green-100 bg-green-50 px-4 py-3 text-sm font-medium text-green-700 shadow-sm">
+                        <svg class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        </svg>
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                {{-- Pesan Error --}}
+                @if(session('error'))
+                    <div class="mb-5 flex items-center gap-3 rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-medium text-red-700 shadow-sm">
+                        <svg class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                        </svg>
+                        {{ session('error') }}
+                    </div>
+                @endif
+
+                {{-- Isi Halaman --}}
                 @yield('content')
-            </div>
+            </main>
+
+            {{-- Footer --}}
+            <x-footer />
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    {{-- Skrip Tambahan --}}
+    @stack('scripts')
 </body>
 </html>

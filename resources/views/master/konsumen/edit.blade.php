@@ -1,44 +1,44 @@
 @extends('layouts.app')
 
+@section('title', 'Edit Konsumen')
+
 @section('content')
-<div class="card shadow-sm border-0">
-    <div class="card-header bg-warning">
-        <h5 class="mb-0">Edit Data Konsumen</h5>
-    </div>
-    <div class="card-body">
-        <form action="{{ route('master.konsumen.update', $konsumen->id) }}" method="POST">
-            @csrf
-            @method('PUT')
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label>Kode Konsumen</label>
-                    <input type="text" name="kode" class="form-control @error('kode') is-invalid @enderror" value="{{ old('kode', $konsumen->kode) }}">
-                    @error('kode') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label>Nama Konsumen</label>
-                    <input type="text" name="nama" class="form-control @error('nama') is-invalid @enderror" value="{{ old('nama', $konsumen->nama) }}">
-                    @error('nama') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label>Telepon</label>
-                    <input type="text" name="telepon" class="form-control @error('telepon') is-invalid @enderror" value="{{ old('telepon', $konsumen->telepon) }}">
-                    @error('telepon') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label>Email</label>
-                    <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email', $konsumen->email) }}">
-                    @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                </div>
-                <div class="col-md-12 mb-3">
-                    <label>Alamat</label>
-                    <textarea name="alamat" class="form-control @error('alamat') is-invalid @enderror" rows="3">{{ old('alamat', $konsumen->alamat) }}</textarea>
-                    @error('alamat') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                </div>
+<x-card title="Edit Data Konsumen" subtitle="Perbarui data konsumen {{ $konsumen->nama }}">
+    <form action="{{ route('master.konsumen.update', $konsumen->id) }}" method="POST" class="flex flex-col gap-5">
+        @csrf
+        @method('PUT')
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+            <div>
+                <x-input-label for="kode" value="Kode Konsumen" />
+                <x-text-input id="kode" name="kode" class="mt-1.5" value="{{ old('kode', $konsumen->kode) }}" />
+                <x-input-error :messages="$errors->get('kode')" class="mt-1.5" />
             </div>
-            <button type="submit" class="btn btn-primary">Update</button>
-            <a href="{{ route('master.konsumen.index') }}" class="btn btn-secondary">Batal</a>
-        </form>
-    </div>
-</div>
+            <div>
+                <x-input-label for="nama" value="Nama Konsumen" />
+                <x-text-input id="nama" name="nama" class="mt-1.5" value="{{ old('nama', $konsumen->nama) }}" />
+                <x-input-error :messages="$errors->get('nama')" class="mt-1.5" />
+            </div>
+            <div>
+                <x-input-label for="telepon" value="Nomor Telepon" />
+                <x-text-input id="telepon" name="telepon" class="mt-1.5" value="{{ old('telepon', $konsumen->telepon) }}" />
+                <x-input-error :messages="$errors->get('telepon')" class="mt-1.5" />
+            </div>
+            <div>
+                <x-input-label for="email" value="Alamat Email" />
+                <x-text-input id="email" name="email" type="email" class="mt-1.5" value="{{ old('email', $konsumen->email) }}" />
+                <x-input-error :messages="$errors->get('email')" class="mt-1.5" />
+            </div>
+            <div class="sm:col-span-2">
+                <x-input-label for="alamat" value="Alamat Lengkap" />
+                <textarea id="alamat" name="alamat" rows="3" class="mt-1.5 w-full rounded-lg border-gray-300 focus:border-purple-500 focus:ring-purple-200">{{ old('alamat', $konsumen->alamat) }}</textarea>
+                <x-input-error :messages="$errors->get('alamat')" class="mt-1.5" />
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3 border-t border-purple-50 pt-5">
+            <x-button type="submit" variant="primary">Perbarui Konsumen</x-button>
+            <x-button as="a" href="{{ route('master.konsumen.index') }}" variant="ghost">Batal</x-button>
+        </div>
+    </form>
+</x-card>
 @endsection
