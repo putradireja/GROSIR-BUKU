@@ -116,6 +116,55 @@
                     Pembayaran Hutang
                 </a>
             </div>
+
+            <div class="flex flex-col gap-1">
+                <p class="px-3 text-[11px] font-bold uppercase tracking-wider text-white/50">Laporan</p>
+                <a href="{{ route('laporan.index') }}" class="sidebar-link {{ request()->routeIs('laporan.*') ? 'active' : '' }}">
+                    <svg class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.5M12 15v3.75m3-6v6M8.25 6h7.5a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-7.5a2.25 2.25 0 0 1-2.25-2.25v-9A2.25 2.25 0 0 1 8.25 6Z" />
+                    </svg>
+                    Laporan
+                </a>
+            </div>
+
+            <div class="flex flex-col gap-1" x-data="{ laporanModulOpen: false }">
+                <p class="px-3 text-[11px] font-bold uppercase tracking-wider text-white/50">Laporan Modul</p>
+
+                <button
+                    type="button"
+                    @click="laporanModulOpen = !laporanModulOpen"
+                    class="sidebar-link w-full items-center justify-between"
+                >
+                    <span class="flex items-center gap-3">
+                        <svg class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                        </svg>
+                        Laporan Modul
+                    </span>
+                    <svg
+                        class="h-4 w-4 shrink-0 transition-transform"
+                        :class="laporanModulOpen ? 'rotate-180' : ''"
+                        fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                    >
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                    </svg>
+                </button>
+
+                <div x-show="laporanModulOpen" x-transition class="ml-4 flex flex-col gap-1 border-l border-white/10 pl-3">
+                    <p class="mt-1 px-2 text-[10px] font-semibold uppercase tracking-wider text-white/40">Transaksi</p>
+                    <a href="{{ asset('dokumen/laporan-pemesanan.pdf') }}" target="_blank" class="sidebar-link text-sm">Pemesanan</a>
+                    <a href="{{ asset('dokumen/laporan-pembelian.pdf') }}" target="_blank" class="sidebar-link text-sm">Pembelian</a>
+                    <a href="{{ asset('dokumen/laporan-penjualan.pdf') }}" target="_blank" class="sidebar-link text-sm">Penjualan</a>
+
+                    <p class="mt-2 px-2 text-[10px] font-semibold uppercase tracking-wider text-white/40">Retur</p>
+                    <a href="{{ asset('dokumen/laporan-retur-pembelian.pdf') }}" target="_blank" class="sidebar-link text-sm">Retur Pembelian</a>
+                    <a href="{{ asset('dokumen/laporan-retur-penjualan.pdf') }}" target="_blank" class="sidebar-link text-sm">Retur Penjualan</a>
+
+                    <p class="mt-2 px-2 text-[10px] font-semibold uppercase tracking-wider text-white/40">Keuangan</p>
+                    <a href="{{ asset('dokumen/laporan-penagihan.pdf') }}" target="_blank" class="sidebar-link text-sm">Penagihan</a>
+                    <a href="{{ asset('dokumen/laporan-hutang.pdf') }}" target="_blank" class="sidebar-link text-sm">Pembayaran Hutang</a>
+                </div>
+            </div>
         </nav>
 
         <div class="mt-4 flex flex-col gap-1 border-t border-white/15 pt-4">

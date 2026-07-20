@@ -60,5 +60,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('laporan')->name('laporan.')->group(function() {
         Route::get('/', [LaporanController::class, 'index'])->name('index');
         Route::post('/cetak', [LaporanController::class, 'cetak'])->name('cetak');
+        Route::get('/export/excel/{jenis}', [LaporanController::class, 'exportExcel'])->name('export.excel');
+        Route::get('/export/pdf/{jenis}', [LaporanController::class, 'exportPdf'])->name('export.pdf');
     });
 });
